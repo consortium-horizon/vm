@@ -26,10 +26,10 @@ sudo rm /etc/nginx/sites-available/default
 sudo mkdir -p /var/www/webapps/
 sudo chown -R www-data:www-data /var/www
 sudo chmod a+w -R /var/www
-git clone https://github.com/consortium-horizon/apps.git /var/www/webapps/current
+git clone https://github.com/consortium-horizon/apps.git /var/www/webapps/current --branch testing
+# Doesn't change anything since it's a shared folder, but do it anyway, in case shared folder doesn't work
 sudo chown -R www-data:www-data /var/www
-sudo chmod a+w -R /var/www
-git checkout -b testing origin/testing
+sudo chmod a+rw -R /var/www
 
 sudo ln -s /var/www/webapps/current/conf/testing/nginx/www /etc/nginx/sites-enabled/
 
