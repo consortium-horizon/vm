@@ -15,12 +15,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 80,    host: 8080
-  config.vm.network "forwarded_port", guest: 3306,  host: 33306
+  config.vm.network "forwarded_port", guest: 8080,    host: 8080
+  config.vm.network "forwarded_port", guest: 3306,  host: 3306
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network "private_network", ip: "10.4.4.58"
+  config.vm.network "private_network", ip: "192.168.35.25", auto_config: false
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -28,12 +28,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
   # config.vm.synced_folder('----localfolder-----', '/home/vagrant/code', :nfs => true)
-  config.vm.synced_folder '.', '/home/vagrant/code', nfs: true
+  # config.vm.synced_folder '.', '/home/vagrant/code', nfs: true
+  config.vm.synced_folder './www', '/var/www', nfs: true
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
+
   config.vm.provider "virtualbox" do |v|
     # Don't boot with headless mode
     v.gui = false
@@ -43,6 +45,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     v.customize ["modifyvm", :id, "--cpuexecutioncap",      "95"]
     v.customize ["modifyvm", :id, "--natdnshostresolver1",  "on"]
     v.customize ["modifyvm", :id, "--natdnsproxy1",         "on"]
+    ### Change network card to PCnet-FAST III
+    # For NAT adapter
+    v.customize ["modifyvm", :id, "--nictype1", "Am79C973"]
+    # For host-only adapter
+    v.customize ["modifyvm", :id, "--nictype2", "Am79C973"]
   end
 
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
