@@ -56,4 +56,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # install some base packages
   config.vm.provision :shell, path: "provision.sh"
+  config.vm.provision :shell, path: "reload.sh", run: "always"
 end

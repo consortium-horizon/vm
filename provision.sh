@@ -26,12 +26,16 @@ sudo rm /etc/nginx/sites-available/default
 sudo mkdir -p /var/www/webapps/
 sudo chown -R www-data:www-data /var/www
 sudo chmod a+w -R /var/www
+# clone the repo if it isn't already in the shared folder
 git clone https://github.com/consortium-horizon/apps.git /var/www/webapps/current --branch testing
 # Doesn't change anything since it's a shared folder, but do it anyway, in case shared folder doesn't work
 sudo chown -R www-data:www-data /var/www
 sudo chmod a+rw -R /var/www
 
 sudo ln -s /var/www/webapps/current/conf/testing/nginx/www /etc/nginx/sites-enabled/
+
+#delete forum if it exists in the share folder (we have to reinstall vanilla since we just spawned the vm)
+rm /var/www/webapps/current/forum/conf/config.php
 
 echo "create database vanilla" | mysql -u root -pvanilla
 
